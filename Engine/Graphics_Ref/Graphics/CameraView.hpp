@@ -1,0 +1,39 @@
+/**************************************************************************************
+ *	File Name        : CameraView.hpp
+ *	Project Name     : Keyboard Warriors
+ *	Primary Author   : JeongHak Kim
+ *	Secondary Author : 
+ *	Copyright Information :
+ *    "All content 2019 DigiPen (USA) Corporation, all rights reserved."
+ **************************************************************************************/
+
+#pragma once
+#include "vec2.hpp"
+#include "mat3.hpp"
+
+enum FrameOfReference
+{
+	RightHanded_OriginCenter,
+	RightHanded_OriginBottomLeft,
+	LeftHanded_OriginTopLeft,
+	Normalize
+};
+
+class [[nodiscard]] CameraView
+{
+public:
+	mat3<float>         GetCameraToNDCTransform() const noexcept { return cameraToNDC; }
+	void                       SetFrameOfReference(FrameOfReference frame_of_reference) noexcept;
+	constexpr FrameOfReference GetFrameOfReference() const noexcept { return frameOfReference; }
+
+	void            SetViewSize(vec2<float> windowSize) noexcept;
+	void            SetViewSize(int pixel_width, int pixel_height) noexcept;
+	void            SetZoom(float new_zoom) noexcept;
+	constexpr float GetZoom() const noexcept { return zoom; }
+
+private:
+	vec2<float> displaySize;
+	mat3<float> cameraToNDC = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+	float zoom{1.0f};
+	FrameOfReference frameOfReference = FrameOfReference::RightHanded_OriginCenter;
+};
